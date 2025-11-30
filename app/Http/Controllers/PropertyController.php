@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 class PropertyController extends Controller
 {
-    public function store(){
 
+    public function index(){
+        return view('properties.property');
     }
 }

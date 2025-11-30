@@ -23,3 +23,5 @@ Route::get('/logout', [LoginController::class, 'destroy'])
     ->name('logout');
 Route::post('addProperty',[PropertyController::class, 'store'])
     ->name('property.store');
+Route::get('/properties', [PropertyController::class, 'index'])
+    ->name('property.index');
