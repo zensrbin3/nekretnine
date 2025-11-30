@@ -31,7 +31,7 @@
                             </li>
 
                             <li>
-                                <a class="dropdown-item" href="{{route('property.store')}}">
+                                <a class="dropdown-item" href="{{route('property.index')}}">
                                     Add advertisement
                                 </a>
                             </li>
