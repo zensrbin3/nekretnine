@@ -25,7 +25,7 @@
 
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{route('profile',auth()->user()->id)}}">
                                     My profile
                                 </a>
                             </li>

@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/home', function () {
@@ -25,3 +27,9 @@ Route::post('addProperty',[PropertyController::class, 'store'])
     ->name('property.store');
 Route::get('/properties', [PropertyController::class, 'index'])
     ->name('property.index');
+Route::get('/profile/{user}', [ProfileController::class, 'show'])
+    ->name('profile');
+Route::post('/profile/upload-photo', [UserController::class, 'uploadPhoto'])
+    ->name('profile.upload.photo');
+
+
