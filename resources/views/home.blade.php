@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('content')
     @include('includes.navbar')
+    @if(session('success'))
+        <div id="successAlert" class="alert alert-success text-center rounded-0 m-0 py-3">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="jumbotron text-center py-5 bg-primary text-white rounded mb-5">
         <h1 class="display-4 animate__animated animate__fadeInDown">Pronađite svoj dom iz snova</h1>
         <p class="lead animate__animated animate__fadeInUp animate__delay-1s">Brza pretraga nekretnina u vašem gradu</p>
@@ -28,6 +33,22 @@
     </div>
     @include('includes.footer')
 @endsection
+@push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const alertBox = document.getElementById("successAlert");
+            if (alertBox) {
+                setTimeout(() => {
+                    alertBox.style.transition = "opacity 0.7s ease";
+                    alertBox.style.opacity = "0";
+
+                    setTimeout(() => alertBox.remove(), 700);
+                }, 2000);
+            }
+        });
+    </script>
+
+@endpush
 <style>
     .hover-scale {
         transition: transform 0.3s, box-shadow 0.3s;

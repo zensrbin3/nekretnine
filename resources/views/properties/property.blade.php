@@ -130,37 +130,35 @@
     <div id="loader-wrapper">
         <div id="loader-box"></div>
     </div>
-
-    <!-- 🔵 GLOBAL TALASASTA POZADINA -->
     <div class="moving-bg"></div>
+    <form method="POST" action="{{route('property.store')}}">
+        @csrf
+        <div id="content" style="display:none;">
+            <div class="container">
+                <h2>Dodavanje Oglasa</h2>
 
-    <div id="content" style="display:none;">
-        <div class="container">
-            <h2>Dodavanje Oglasa</h2>
+                <label>Naslov oglasa:</label>
+                <input type="text" name="title" placeholder="Unesite naslov..." />
 
-            <label>Naslov oglasa:</label>
-            <input type="text" placeholder="Unesite naslov..." />
-
-            <label>Izaberite vrstu nekretnine:</label>
-            <div>
-                <input type="radio" name="tip" value="stan"> Stan <br>
-                <input type="radio" name="tip" value="kuća"> Kuća <br>
-                <input type="radio" name="tip" value="plac"> Plac <br>
-                <input type="radio" name="tip" value="lokal"> Lokal
+                <label>Izaberite vrstu nekretnine:</label>
+                <div>
+                    <input type="radio" name="type" value="apartment"> Stan <br>
+                    <input type="radio" name="type" value="house"> Kuća <br>
+                    <input type="radio" name="type" value="land"> Plac <br>
+                    <input type="radio" name="type" value="office"> Lokal
+                </div>
+                <label>Opis:</label>
+                <textarea rows="5" name="description" placeholder="Unesite opis..."></textarea>
+                <label>Lokacija:</label>
+                <input type="text" name="location" placeholder="Unesite lokaciju..." />
+                <label>Cena (€):</label>
+                <input type="number" name="price" placeholder="Unesite cenu..." />
+                <label>Veličina(m^2):</label>
+                <input type="number" name="size_m2" placeholder="Unesite veličinu..." />
+                <button>Sačuvaj oglas</button>
             </div>
-
-            <label>Opis:</label>
-            <textarea rows="5" placeholder="Unesite opis..."></textarea>
-
-            <label>Lokacija:</label>
-            <input type="text" placeholder="Unesite lokaciju..." />
-
-            <label>Cena (€):</label>
-            <input type="number" placeholder="Unesite cenu..." />
-
-            <button>Sačuvaj oglas</button>
         </div>
-    </div>
+    </form>
 @endsection
 
 @push('scripts')

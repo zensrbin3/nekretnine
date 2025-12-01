@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Property extends Model
 {
     protected $table = 'properties';
-    protected $fillable = ['user_id','title','description','location','price','size_m2','type','status'];
+    protected $fillable = ['user_id','title','description','location','price','size_m2','type','status','property_count'];
     public function comments(){
         return $this->hasMany('App\Models\Comment');
     }
