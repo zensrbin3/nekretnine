@@ -136,7 +136,9 @@
         <div id="content" style="display:none;">
             <div class="container">
                 <h2>Dodavanje Oglasa</h2>
-
+                @foreach($users as $user)
+                    <p>{{$user->name}}</p>
+                @endforeach
                 <label>Naslov oglasa:</label>
                 <input type="text" name="title" placeholder="Unesite naslov..." />
 
