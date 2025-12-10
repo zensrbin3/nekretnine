@@ -3,7 +3,7 @@
     @include('includes.navbar')
     <div class="container-fluid mt-4">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3  sticky-top">
                 <div class="border rounded p-3 text-center">
                     <div class="mb-3">
                         <label for="photo" class="form-label">Profilna slika</label>
@@ -16,23 +16,40 @@
                              class="img-fluid"
                              style="height: 100%; width: 100%; object-fit: cover;">
                     </div>
-                    <h5>Dobrodošli <i>{{ auth()->user()->name }}</i></h5>
-                    <p>Email: {{ auth()->user()->email }}</p>
-                    <p>Broj vasih oglasa: {{auth()->user()->properties()->count()}}</p>
-
+                    <h5>Dobrodošli <i>{{ $user->name }}</i></h5>
+                    <p>Email: {{ $user->email }}</p>
+                    <p>Broj vasih oglasa: {{$user->properties()->count()}}</p>
                 </div>
-
+                {{--                popuni necim--}}
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 " style="overflow-y:auto; max-height:80vh;">
                 <div class="p-3 bg-white border rounded">
                     <h4>Glavni sadržaj</h4>
                     <p>Ovde ide sve ostalo...</p>
                 </div>
+                @if($user->properties->count() == 0)
+                    <div class="alert alert-danger">
+                        Nažalost nemate nijedan oglas, započnite novu avanturu što pre!
+                    </div>
+                @else
+                    <div class="d-flex flex-column gap-4">
+                        @foreach($user->properties as $prop)
+                            <div class="card property-card p-3">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">{{ $prop->title }}</h5>
+                                    <p class="card-text">{{ $prop->description }}</p>
+                                    <p class="card-text"><strong>Cena:</strong> {{ $prop->price }} €</p>
+                                    <a href="" class="btn btn-primary mt-auto">Vidi oglas</a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 ">
                 <div class="list-group">
                     <a href="{{ route('property.index') }}" class="list-group-item">Dodaj oglas</a>
-                    <a href="" class="list-group-item">Moji oglasi</a>
+                    <a href="{{ route('profile',auth()->user()->id) }}" class="list-group-item">Moji oglasi</a>
                     <div class="dropdown">
                         <button class="list-group-item dropdown-toggle w-100 text-start"
                                 data-bs-toggle="dropdown">
@@ -53,6 +70,7 @@
                         <button class="btn btn-primary w-100">Sačuvaj</button>
                     </div>
                 </div>
+{{--                popuni necim--}}
             </div>
         </div>
     </div>
@@ -104,3 +122,33 @@
         });
     </script>
 @endpush
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.property-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('show');
+                }, index * 250);
+            });
+        });
+    </script>
+@endpush
+<style>
+    .property-card {
+        transform: rotateX(-15deg);
+        opacity: 0;
+        transition: transform 0.5s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        cursor: pointer;
+    }
+    .property-card.show {
+        transform: rotateX(0deg);
+        opacity: 1;
+    }
+    .property-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+</style>
+
+

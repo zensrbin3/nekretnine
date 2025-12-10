@@ -27,7 +27,7 @@ Route::post('addProperty',[PropertyController::class, 'store'])
     ->name('property.store');
 Route::get('/properties', [PropertyController::class, 'index'])
     ->name('property.index');
-Route::get('/profile/{user}', [ProfileController::class, 'show'])
+Route::get('/profile/{userId}', [ProfileController::class, 'show'])
     ->name('profile');
 Route::post('/profile/upload-photo', [UserController::class, 'uploadPhoto'])
     ->name('profile.upload.photo');
