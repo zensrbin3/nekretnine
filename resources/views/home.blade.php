@@ -6,6 +6,12 @@
             {{ session('success') }}
         </div>
     @endif
+    @if(request()->has('success'))
+        <div class="alert alert-success">{{ request('success') }}</div>
+    @endif
+    @if(request()->has('error'))
+        <div class="alert alert-danger">{{ request('error') }}</div>
+    @endif
         <div class="jumbotron text-center py-5 bg-primary text-white rounded mb-5">
 {{--            ovde--}}
             <h1 class="display-4 animate__animated animate__fadeInDown">Pronađite svoj dom iz snova</h1>
@@ -32,6 +38,7 @@
                 @endfor
             </div>
         </div>
+    @include('pricing.pricing')
     @include('includes.footer')
 @endsection
 @push('scripts')
