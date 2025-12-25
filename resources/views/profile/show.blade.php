@@ -67,7 +67,8 @@
                     <div class="border rounded p-3">
                         <h5 id="formTitle"></h5>
                         <input class="form-control mb-2" id="newValue" placeholder="Unesite novu vrednost">
-                        <button class="btn btn-primary w-100">Sačuvaj</button>
+                        <button id="verification" class="btn btn-primary w-100">Sačuvaj</button>
+                        <div class="alert alert-success mt-3" style="display: none" id="field"></div>
                     </div>
                 </div>
 {{--                popuni necim--}}
@@ -77,16 +78,92 @@
 @endsection
 @push('scripts')
     <script>
+        let currentAction = null;
+
         function showForm(type) {
             document.getElementById('settingsForm').style.display = 'block';
-            let title = "";
-            if (type === 'name') title = "Promeni ime";
-            if (type === 'email') title = "Promeni email";
-            if (type === 'password') title = "Promeni lozinku";
-            if (type === 'verify') title = "Verifikuj email";
-            //if(title==="Promeni lozinku") da se doda +1 placeholder
-            document.getElementById('formTitle').innerText = title;
+            currentAction = type;
+
+            const title = document.getElementById("formTitle");
+            const input = document.getElementById("newValue");
+            const btn = document.getElementById("verification");
+            btn.style.display = 'block';
+
+            const isVerified = {{auth()->user()->hasVerifiedEmail() ? "true" : "false"}};
+            if(type==="verify"){
+                if(isVerified==="true") {
+                    document.getElementById("field").innerHTML="Vec ste verifikovali e-mail!"
+                    document.getElementById("field").style.display="block";
+                    title.hidden=true;
+                    btn.hidden=true;
+                    input.hidden=true;
+                }else{
+                    document.getElementById("field").style.display="none";
+                    title.innerText="Verifikacija E-mail-a"
+                    input.hidden=true;
+                    btn.hidden=false;
+                    title.hidden=false;
+                    btn.innerHTML="Posalji verifikacioni kod";
+
+                }
+            }else{
+                btn.innerHTML="Sacuvaj";
+                document.getElementById("field").style.display="none";
+                input.hidden=false;
+                title.hidden=false;
+                btn.hidden=false;
+                if(type==="name"){
+                    title.innerText="Promeni ime";
+                }else if(type==="email"){
+                    title.innerText="Promeni e-mail";
+                }else{
+                    title.innerText="Promeni lozinku";
+                }
+            }
+
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const btn = document.getElementById('verification');
+
+            if (!btn) {
+                console.error('Verification button not found');
+                return;
+            }
+
+            btn.addEventListener('click', function () {
+
+                fetch("{{ route('profile.update') }}", {
+                    method: "POST",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        action: currentAction,
+                        value: document.getElementById("newValue").value
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        alert(data.msg);
+
+                        if (currentAction === "verify" && data.verified === true) {
+                            btn.style.display = "none";
+
+                            const div = document.createElement("div");
+                            div.className = "alert alert-success mt-2";
+                            div.innerText = data.msg;
+
+                            document.getElementById("settingsForm").appendChild(div);
+                        }
+                    })
+                    .catch(err => console.error(err));
+            });
+
+        });
     </script>
 @endpush
 @push('scripts')
