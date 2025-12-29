@@ -38,6 +38,13 @@
                                  style="background:#e9f7ef; color:#1e7e34;">
                                 Kupili ste ovaj paket!
                             </div>
+                        @elseif(auth()->user() && !auth()->user()->subscribedToPrice($prices["Starter"])
+                                   && auth()->user()->subscribed('default'))
+                            <a href="#"
+                               class="btn btn-secondary mt-auto wait-subscription-btn"
+                               data-ends-at="{{ auth()->user()->subscription('default')->ends_at }}">
+                                Izaberi paket
+                            </a>
                         @else
                             <a href="{{ route('checkout','Starter') }}" class="btn btn-primary mt-auto">
                                 Izaberi paket
@@ -68,6 +75,13 @@
                                  style="background:#e9f7ef; color:#1e7e34;">
                                 Kupili ste ovaj paket!
                             </div>
+                        @elseif(auth()->user() && !auth()->user()->subscribedToPrice($prices["Company"])
+                                   && auth()->user()->subscribed('default'))
+                            <a href="#"
+                               class="btn btn-secondary mt-auto wait-subscription-btn"
+                               data-ends-at="{{ auth()->user()->subscription('default')->ends_at }}">
+                                Izaberi paket
+                            </a>
                         @else
                             <a href="{{ route('checkout','Company') }}" class="btn btn-primary mt-auto">
                                 Izaberi paket
@@ -93,12 +107,20 @@
                             <li class="mb-2">✅ Top pozicije na sajtu</li>
                             <li class="mb-2">✅ Brendirani profil agencije</li>
                             <li class="mb-2">✅ Telefonska i email podrška</li>
+                            <li class="mb-2" id="shouldWaitToFinishSubscription" style="display: none"></li>
                         </ul>
                         @if(auth()->user() && auth()->user()->subscribedToPrice($prices["Enterprise"]))
                             <div class="mt-auto p-3 text-center fw-bold rounded"
                                  style="background:#e9f7ef; color:#1e7e34;">
                                 Kupili ste ovaj paket!
                             </div>
+                        @elseif(auth()->user() && !auth()->user()->subscribedToPrice($prices["Enterprise"])
+                                   && auth()->user()->subscribed('default'))
+                            <a href="#"
+                               class="btn btn-secondary mt-auto wait-subscription-btn"
+                               data-ends-at="{{ auth()->user()->subscription('default')->ends_at }}">
+                                Izaberi paket
+                            </a>
                         @else
                             <a href="{{ route('checkout','Enterprise') }}" class="btn btn-primary mt-auto">
                                 Izaberi paket
@@ -110,3 +132,30 @@
         </div>
     </div>
 </section>
+<script>
+    document.querySelectorAll('.wait-subscription-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const originalText = this.innerText;
+            const originalClasses = this.className;
+            const endsAt = this.dataset.endsAt;
+
+            if (!endsAt) return;
+
+            this.classList.remove('btn-secondary');
+            this.classList.add('btn-warning');
+
+            const diffMs = new Date(endsAt) - new Date();
+            const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+            this.innerText = `Morate sačekati još ${diffDays} dana jer ste se pretplatili na drugi paket!`;
+
+            setTimeout(() => {
+                this.innerText = originalText;
+                this.className = originalClasses;
+            }, 3000);
+        });
+    });
+
+</script>
