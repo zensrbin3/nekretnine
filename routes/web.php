@@ -25,10 +25,10 @@ Route::post('/email/verification-notification', function () {
 
 
 Route::get('/home', function () {
-    return view('home');
+    return view('home',['properties'=>\App\Models\Property::all()]);
 })->name('home');
 Route::get('/', function () {
-    return view('home');
+    return view('home',['properties'=>\App\Models\Property::all()]);
 })->name('home');
 Route::get('/register', [RegisterController::class, 'index'])
 ->name('register');
