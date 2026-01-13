@@ -20,7 +20,7 @@
         <div class="container mb-5">
             <h2 class="mb-4">Popularne nekretnine</h2>
             <div class="row g-4">
-                @foreach($properties as $property)
+                @foreach(\App\Models\Property::all() as $property)
                     <div class="col-md-3">
                         <div class="card h-100 shadow-sm border-0 hover-scale">
                             <img src="" class="card-img-top" alt="Nekretnina">
@@ -28,7 +28,7 @@
                                 <h5 class="card-title">{{$property->title}}</h5>
                                 <p class="card-text">{{$property->description}}</p>
                                 <p class="card-text">{{$property->location}}</p>
-                                <a href="#" class="btn btn-primary">Pogledaj</a>
+                                <a href="{{route('property.show',$property->id)}}" class="btn btn-primary">Pogledaj</a>
                             </div>
                         </div>
                     </div>

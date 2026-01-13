@@ -25,10 +25,10 @@ Route::post('/email/verification-notification', function () {
 
 
 Route::get('/home', function () {
-    return view('home',['properties'=>\App\Models\Property::all()]);
+    return view('home');
 })->name('home');
 Route::get('/', function () {
-    return view('home',['properties'=>\App\Models\Property::all()]);
+    return view('home');
 })->name('home');
 Route::get('/register', [RegisterController::class, 'index'])
 ->name('register');
@@ -44,6 +44,8 @@ Route::post('addProperty',[PropertyController::class, 'store'])
     ->name('property.store');
 Route::get('/properties', [PropertyController::class, 'index'])
     ->name('property.index');
+Route::get('/properties/{propertyId}', [PropertyController::class, 'show'])
+    ->name('property.show');
 Route::get('/profile/{userId}', [ProfileController::class, 'show'])
     ->name('profile');
 Route::post('/profile/update', [ProfileController::class, 'update'])

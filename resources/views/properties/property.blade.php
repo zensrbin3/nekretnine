@@ -131,14 +131,11 @@
         <div id="loader-box"></div>
     </div>
     <div class="moving-bg"></div>
-    <form method="POST" action="{{route('property.store')}}">
+    <form method="POST" action="{{route('property.store')}}" enctype="multipart/form-data">
         @csrf
         <div id="content" style="display:none;">
             <div class="container">
                 <h2>Dodavanje Oglasa</h2>
-                @foreach($users as $user)
-                    <p>{{$user->name}}</p>
-                @endforeach
                 <label>Naslov oglasa:</label>
                 <input type="text" name="title" placeholder="Unesite naslov..." />
 
@@ -157,6 +154,8 @@
                 <input type="number" name="price" placeholder="Unesite cenu..." />
                 <label>Veličina(m^2):</label>
                 <input type="number" name="size_m2" placeholder="Unesite veličinu..." />
+                <label>Dodajte slike za vas oglas:</label><br>
+                <input type="file" name="images[]" multiple/>
                 <button>Sačuvaj oglas</button>
             </div>
         </div>

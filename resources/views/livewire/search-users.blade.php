@@ -9,7 +9,7 @@
     @if($search !== '' && $properties->count())
         <div class="list-group position-absolute w-100 mt-1 shadow">
             @foreach($properties as $property)
-                <a href="#"
+                <a href="{{route('property.show',$property->id)}}"
                    class="list-group-item list-group-item-action">
                     {{ $property->title }}
                 </a>
