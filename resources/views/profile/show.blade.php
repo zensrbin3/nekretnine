@@ -39,7 +39,7 @@
                                     <h5 class="card-title">{{ $prop->title }}</h5>
                                     <p class="card-text">{{ $prop->description }}</p>
                                     <p class="card-text"><strong>Cena:</strong> {{ $prop->price }} €</p>
-                                    <a href="" class="btn btn-primary mt-auto">Vidi oglas</a>
+                                    <a href="{{route('property.show',$prop->id)}}" class="btn btn-primary mt-auto">Vidi oglas</a>
                                 </div>
                             </div>
                         @endforeach

@@ -11,4 +11,7 @@ class Property extends Model
     public function comments(){
         return $this->hasMany('App\Models\Comment');
     }
+    public function images(){
+        return $this->hasMany('App\Models\PropertyImage');
+    }
 }
