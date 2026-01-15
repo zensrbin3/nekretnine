@@ -49,10 +49,10 @@
                             </div>
                         @endif
                         @if($property->images->count())
-                            <div id="slider">
-                                @foreach($property->images as $image)
-                                    <img src="{{ asset('storage/' . $image->path) }}" alt="Nekretnina" class="img-fluid mb-2">
-                                @endforeach
+                            <div class="slider">
+                                <button id="prev"><</button>
+                                <img id="sliderImage" src="{{ asset('storage/' . $property->images->first()->path) }}" alt="Nekretnina" class="img-fluid mb-2 slider-img">
+                                <button id="next">></button>
                             </div>
                         @endif
 
@@ -67,3 +67,42 @@
 @endsection
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<style>
+    .slider {
+        position: relative;
+        max-width: 700px;
+        margin: auto;
+    }
+    .slider-img {
+        width: 100%;
+        border-radius: 12px;
+    }
+    .slider button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,.6);
+        color: white;
+        border: none;
+        font-size: 2rem;
+        padding: 5px 15px;
+        cursor: pointer;
+    }
+    #prev { left: 10px; }
+    #next { right: 10px; }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentIndex = 0;
+        const images = @json($property->images->pluck('path')->map(fn($p) => asset('storage/'.$p)));
+        let image = document.getElementById("sliderImage");
+        document.getElementById("prev").addEventListener("click",() => {
+            currentIndex=(currentIndex-1+images.length)%images.length;
+            image.src=images[currentIndex];
+        });
+        document.getElementById("next").addEventListener("click",() => {
+            currentIndex=(currentIndex+1)%images.length;
+            image.src=images[currentIndex];
+        });
+    });
+</script>
