@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Property;
 use App\Models\PropertyImage;
+use App\Models\PropertyView;
 use App\Repositories\UserRepository;
 use App\Services\PropertyService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -21,7 +23,31 @@ class PropertyController extends Controller
 
     public function show($propertyId)
     {
-        return view('properties.propertyView',['property'=>Property::find($propertyId)]);
+        $property = Property::findOrFail($propertyId);
+
+        $userId = auth()->id();
+        $ip = request()->ip();
+        $today = Carbon::today();
+
+        $alreadyViewed = PropertyView::where('property_id', $property->id)
+            ->whereDate('viewed_at', $today)
+            ->when($userId, function ($q) use ($userId) {
+                $q->where('user_id', $userId);
+            }, function ($q) use ($ip) {
+                $q->where('ip_address', $ip);
+            })
+            ->exists();
+
+        if (!$alreadyViewed) {
+            PropertyView::create([
+                'property_id' => $property->id,
+                'user_id' => $userId,
+                'ip_address' => $ip,
+                'viewed_at' => now(),
+            ]);
+            $property->increment('views');
+        }
+        return view('properties.propertyView',['property'=>$property]);
     }
 
     public function store(Request $request)
