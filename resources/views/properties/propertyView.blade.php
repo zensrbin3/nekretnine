@@ -54,6 +54,8 @@
                                 <img id="sliderImage" src="{{ asset('storage/' . $property->images->first()->path) }}" alt="Nekretnina" class="img-fluid mb-2 slider-img">
                                 <button id="next">></button>
                             </div>
+                        @else
+                            <div class="alert alert-danger">Nazalost vlasnik nekretnine nije dodao slike(iz nekog svog razloga :))</div>
                         @endif
 
                     </div>

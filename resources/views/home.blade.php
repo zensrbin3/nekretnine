@@ -20,15 +20,23 @@
         <div class="container mb-5">
             <h2 class="mb-4">Popularne nekretnine</h2>
             <div class="row g-4">
-                @foreach(\App\Models\Property::all() as $property)
+                @foreach($properties as $property)
                     <div class="col-md-3">
                         <div class="card h-100 shadow-sm border-0 hover-scale">
-                            <img src="" class="card-img-top" alt="Nekretnina">
+                            @if($property->images->first())
+                                <img src="{{ asset('/storage/'.$property->images->first()->path) }}" class="card-img-top" alt="Nekretnina">
+                            @else
+                                <img src="" class="card-img-top" alt="Nekretnina">
+                            @endif
                             <div class="card-body">
                                 <h5 class="card-title">{{$property->title}}</h5>
                                 <p class="card-text">{{$property->description}}</p>
                                 <p class="card-text">{{$property->location}}</p>
-                                <a href="{{route('property.show',$property->id)}}" class="btn btn-primary">Pogledaj</a>
+                                <span class="me-1">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                                <span>{{ $property->views }}</span><br>
+                                <a href="{{route('property.show',$property->id)}}" class="btn btn-primary mt-3">Pogledaj</a>
                             </div>
                         </div>
                     </div>
