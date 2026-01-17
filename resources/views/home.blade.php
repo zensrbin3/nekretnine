@@ -20,7 +20,7 @@
         <div class="container mb-5">
             <h2 class="mb-4">Popularne nekretnine</h2>
             <div class="row g-4">
-                @foreach($properties as $property)
+                @foreach(\App\Models\Property::orderByDesc('views')->take(4)->get() as $property)
                     <div class="col-md-3">
                         <div class="card h-100 shadow-sm border-0 hover-scale">
                             @if($property->images->first())

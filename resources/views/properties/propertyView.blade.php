@@ -47,6 +47,11 @@
                                 <h5 class="fw-bold mb-2">Opis nekretnine</h5>
                                 <p class="text-muted">{{ $property->description }}</p>
                             </div>
+                            <div class="animate__animated animate__fadeInUp animate__delay-5s">
+                                <a href="tel:{{ $property->user->phone }}" class="btn btn-success">
+                                    <i class="bi bi-telephone"></i> Pozovi
+                                </a>
+                            </div>
                         @endif
                         @if($property->images->count())
                             <div class="slider">
