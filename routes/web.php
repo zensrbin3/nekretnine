@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
@@ -25,12 +25,14 @@ Route::post('/email/verification-notification', function () {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
-Route::get('/home', [HomeController::class,'index'])
-    ->name('home');
-Route::get('/', [HomeController::class,'index'])
-    ->name('home');
+Route::get('/home', function () {
+    return view('home');
+})->name('home');
+Route::get('/', function () {
+    return view('home');
+})->name('home');
 Route::get('/register', [RegisterController::class, 'index'])
-->name('register');
+->name('register')->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store'])
     ->name('register.store');
 Route::get('/login', [LoginController::class, 'index'])
@@ -50,6 +52,9 @@ Route::get('/profile/{userId}', [ProfileController::class, 'show'])
 Route::post('/profile/update', [ProfileController::class, 'update'])
     ->middleware('auth')
     ->name('profile.update');
+
+Route::post('/properties/{propertyId}/comment',[CommentController::class, 'store'])
+    ->name('comment.store');
 
 Route::post('/profile/upload-photo', [UserController::class, 'uploadPhoto'])
     ->middleware('auth')

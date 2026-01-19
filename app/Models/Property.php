@@ -14,4 +14,7 @@ class Property extends Model
     public function images(){
         return $this->hasMany('App\Models\PropertyImage');
     }
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
 }

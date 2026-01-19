@@ -20,7 +20,7 @@
                     <p>Email: {{ $user->email }}</p>
                     <p>Broj vasih oglasa: {{$user->properties()->count()}}</p>
                 </div>
-                {{--                popuni necim--}}
+                <div id="map" class="rounded border mt-3" style="height:300px;"></div>
             </div>
             <div class="col-md-6 " style="overflow-y:auto; max-height:80vh;">
                 <div class="p-3 bg-white border rounded">
@@ -227,5 +227,36 @@
         box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
 </style>
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+@push('scripts')
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+@endpush
+@push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const startLat = 44.7866;
+                const startLng = 20.4489;
 
+                const map = L.map('map').setView([startLat, startLng], 13);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap'
+                }).addTo(map);
+
+                const marker = L.marker([startLat, startLng], {
+                    draggable: true
+                }).addTo(map);
+
+                marker.on('dragend', function (e) {
+                    const pos = e.target.getLatLng();
+                    console.log('Marker pomeren na:', pos.lat, pos.lng);
+                    // ovde ćemo kasnije Livewire
+                });
+
+            });
+        </script>
+@endpush
 
