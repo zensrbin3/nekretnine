@@ -6,7 +6,12 @@
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-lg-9">
-
+                @if(session('success'))
+                    <div class="alert alert-success">{{session('success')}}</div>
+                @endif
+                @if(session('error'))
+                    <div class="alert alert-danger">{{session('error')}}</div>
+                @endif
                 <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
                     <div class="bg-primary text-white p-4 text-center animate__animated animate__fadeInDown">
                         <h1 class="fw-bold mb-1">{{ $property->title }}</h1>
@@ -54,7 +59,7 @@
                             </div>
                         @endif
                         @if($property->images->count())
-                            <div class="slider">
+                            <div class="slider animate__animated animate__fadeInUp animate__delay-6s">
                                 <button id="prev"><</button>
                                 <img id="sliderImage" src="{{ asset('storage/' . $property->images->first()->path) }}" alt="Nekretnina" class="img-fluid mb-2 slider-img">
                                 <button id="next">></button>
@@ -62,6 +67,32 @@
                         @else
                             <div class="alert alert-danger">Nazalost vlasnik nekretnine nije dodao slike(iz nekog svog razloga :))</div>
                         @endif
+
+                        <form action="{{ route('comment.store', $property->id) }}" method="POST">
+                            @csrf
+
+                            <div class="comment-wrapper animate__animated animate__fadeInUp animate__delay-5s">
+
+                                <button type="button"
+                                        id="toggleComment"
+                                        class="btn btn-outline-primary d-flex align-items-center gap-2">
+                                    <i class="bi bi-plus-circle"></i>
+                                    Dodaj komentar
+                                </button>
+
+                                <div id="commentBox" class="comment-box mt-3">
+                                <textarea class="form-control mb-2"
+                                          rows="4"
+                                          name="comment"
+                                          placeholder="Unesite vaš komentar..."></textarea>
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        Pošalji komentar
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+
 
                     </div>
                 </div>
@@ -75,6 +106,25 @@
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <style>
+    .comment-box {
+        display: none;
+        animation: fadeSlide 0.4s ease forwards;
+    }
+
+    @keyframes fadeSlide {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    #toggleComment i {
+        font-size: 1.2rem;
+    }
     .slider {
         position: relative;
         max-width: 700px;
@@ -113,3 +163,25 @@
         });
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const toggleBtn = document.getElementById('toggleComment');
+        const commentBox = document.getElementById('commentBox');
+        let opened = false;
+
+        toggleBtn.addEventListener('click', function () {
+            opened = !opened;
+
+            if (opened) {
+                commentBox.style.display = 'block';
+                toggleBtn.innerHTML = '<i class="bi bi-dash-circle"></i> Zatvori';
+            } else {
+                commentBox.style.display = 'none';
+                toggleBtn.innerHTML = '<i class="bi bi-plus-circle"></i> Dodaj komentar';
+            }
+        });
+
+    });
+</script>
+
