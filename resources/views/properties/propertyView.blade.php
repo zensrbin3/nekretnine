@@ -67,6 +67,45 @@
                         @else
                             <div class="alert alert-danger">Nazalost vlasnik nekretnine nije dodao slike(iz nekog svog razloga :))</div>
                         @endif
+                        @if($property->comments->count())
+                            <div class="mt-4 animate__animated animate__fadeInUp animate__delay-1s">
+                                <h5 class="fw-bold mb-3">Komentari</h5>
+
+                                @foreach($property->comments as $comment)
+                                    <div class="d-flex mb-3">
+                                        <div class="me-3">
+                                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                                                 style="width:40px;height:40px;">
+                                                <i class="bi bi-person-fill"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="bg-light rounded-3 p-3 w-100">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <strong>{{ $comment->user->name ?? 'Gost' }}</strong>
+                                                <small class="text-muted">
+                                                    {{ $comment->created_at->diffForHumans() }}
+                                                </small>
+                                            </div>
+                                            <p class="mb-0">
+                                                {{ $comment->comment }}
+                                            </p>
+                                        </div>
+
+                                        <div class="d-flex gap-3 mt-2">
+                                            <button class="btn btn-sm btn-outline-success">
+                                                <i class="bi bi-hand-thumbs-up"></i> Like
+                                            </button>
+
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-hand-thumbs-down"></i> Dislike
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+
 
                         <form action="{{ route('comment.store', $property->id) }}" method="POST">
                             @csrf
