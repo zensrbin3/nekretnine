@@ -1,29 +1,33 @@
-<div class="position-relative w-50 mx-auto">
+<div class="w-50 mx-auto position-relative">
+    <div class="d-flex gap-2">
+        <select
+            class="form-select w-25"
+            wire:model.live="type"
+        >
+            <option value="">Kategorija:</option>
+            <option value="all">Sve</option>
+            <option value="apartment">Apartman</option>
+            <option value="land">Zemlja</option>
+            <option value="office">Kancelarija</option>
+            <option value="house">Kuća</option>
+        </select>
 
-    <input
-        type="text"
-        class="form-control form-control-lg"
-        placeholder="Pretraži nekretnine..."
-        wire:model.debounce.300ms="search"
-    >
+        <input
+            type="text"
+            class="form-control"
+            placeholder="Pretraži nekretnine..."
+            wire:model.live="search"
+        >
+    </div>
 
-    @if($search !== '' && $properties->count())
-        <div class="list-group position-absolute w-100 mt-2 shadow-sm"
-             style="z-index: 1000">
-
+    @if(($search !== '' || $type !== '') && $properties->count())
+        <div class="list-group position-absolute w-100 mt-1 shadow" style="z-index:1000">
             @foreach($properties as $property)
                 <a href="{{ route('property.show', $property->id) }}"
-                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-
-                    <span>{{ $property->title }}</span>
-
-                    <span class="badge bg-secondary text-capitalize">
-                        {{ $property->type }}
-                    </span>
+                   class="list-group-item list-group-item-action">
+                    {{ $property->title }}
                 </a>
             @endforeach
-
         </div>
     @endif
-
 </div>
