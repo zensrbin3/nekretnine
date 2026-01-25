@@ -12,6 +12,9 @@
     @if(request()->has('error'))
         <div class="alert alert-danger">{{ request('error') }}</div>
     @endif
+    @if(session('propertyDeleted'))
+        <div class="alert alert-success">{{session('propertyDeleted')}}</div>
+    @endif
         <div class="jumbotron text-center py-5 bg-primary text-white rounded mb-5">
             <h1 class="display-4 animate__animated animate__fadeInDown">Pronađite svoj dom iz snova</h1>
             <p class="lead animate__animated animate__fadeInUp animate__delay-1s">Brza pretraga nekretnina u vašem gradu</p>

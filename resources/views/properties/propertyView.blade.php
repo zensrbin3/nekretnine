@@ -23,6 +23,20 @@
                                 €{{ number_format($property->price, 2, ',', '.') }}
                             </h2>
                         </div>
+                        @can('delete-property', $property)
+                            <div class="text-center animate__animated animate__fadeInUp animate__delay-1s">
+                                <form action="{{ route('property.destroy', $property->id) }}"
+                                      method="POST"
+                                      onsubmit="return confirm('Da li ste sigurni?')">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button class="btn btn-danger btn-sm">
+                                        Obriši nekretninu
+                                    </button>
+                                </form>
+                            </div>
+                        @endcan
                         <div class="row text-center mb-4">
                             <div class="col-md-4 animate__animated animate__fadeInUp animate__delay-2s">
                                 <div class="p-3 border rounded-3 h-100">

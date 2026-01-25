@@ -6,10 +6,9 @@ use App\Models\Property;
 use App\Models\PropertyImage;
 use App\Models\PropertyView;
 use App\Repositories\UserRepository;
-use App\Services\PropertyService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Gate;
 
 class PropertyController extends Controller
 {
@@ -87,5 +86,14 @@ class PropertyController extends Controller
         }
         return redirect('/')->with('success', 'Uspešno ste dodali oglas!');
     }
+
+    public function destroy(Property $property)
+    {
+        Gate::authorize('delete-property', $property);
+        $property->delete();
+        return redirect()->route('home')
+            ->with('propertyDeleted','Nekretnina je uspesno obrisana!');
+    }
+
 
 }
