@@ -12,6 +12,8 @@
                 @if(session('error'))
                     <div class="alert alert-danger">{{session('error')}}</div>
                 @endif
+{{--                    <div id="example"></div>--}}
+{{--                    @vite('resources/js/example.js')--}}
                 <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
                     <div class="bg-primary text-white p-4 text-center animate__animated animate__fadeInDown">
                         <h1 class="fw-bold mb-1">{{ $property->title }}</h1>
@@ -23,6 +25,20 @@
                                 €{{ number_format($property->price, 2, ',', '.') }}
                             </h2>
                         </div>
+                        @can('delete-property', $property)
+                            <div class="text-center animate__animated animate__fadeInUp animate__delay-1s">
+                                <form action="{{ route('property.destroy', $property->id) }}"
+                                      method="POST"
+                                      onsubmit="return confirm('Da li ste sigurni?')">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button class="btn btn-danger btn-sm">
+                                        Obriši nekretninu
+                                    </button>
+                                </form>
+                            </div>
+                        @endcan
                         <div class="row text-center mb-4">
                             <div class="col-md-4 animate__animated animate__fadeInUp animate__delay-2s">
                                 <div class="p-3 border rounded-3 h-100">

@@ -47,6 +47,8 @@ Route::get('/properties', [PropertyController::class, 'index'])
     ->name('property.index');
 Route::get('/properties/{propertyId}', [PropertyController::class, 'show'])
     ->name('property.show');
+Route::delete('/properties/{property}/delete', [PropertyController::class, 'destroy'])
+    ->name('property.destroy');
 Route::get('/profile/{userId}', [ProfileController::class, 'show'])
     ->name('profile');
 Route::post('/profile/update', [ProfileController::class, 'update'])
@@ -63,5 +65,16 @@ Route::post('/profile/upload-photo', [UserController::class, 'uploadPhoto'])
 
 Route::get('/checkout/{name}',[CheckoutController::class, 'checkout'])
     ->name('checkout')->middleware('auth');
+
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'sr'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('lang');
+
+
+
+
 
 
