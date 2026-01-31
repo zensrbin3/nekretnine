@@ -12,6 +12,8 @@
                 @if(session('error'))
                     <div class="alert alert-danger">{{session('error')}}</div>
                 @endif
+{{--                    <div id="example"></div>--}}
+{{--                    @vite('resources/js/example.js')--}}
                 <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
                     <div class="bg-primary text-white p-4 text-center animate__animated animate__fadeInDown">
                         <h1 class="fw-bold mb-1">{{ $property->title }}</h1>

@@ -1,6 +1,17 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
     <div class="container">
-        <a class="navbar-brand" href="/home">Pocetna</a>
+        <div class="dropdown m-2">
+            <button class="list-group-item w-100 text-start"
+                    data-bs-toggle="dropdown">
+                <img src="{{asset('storage/language.jpg')}}" style="width: 40px; height: 40px;">
+            </button>
+            <ul class="dropdown-menu w-25">
+                <li><a href="{{route('lang','en')}}" class="dropdown-item">ENG</a></li>
+                <li><a href="{{route('lang','sr')}}" class="dropdown-item">SRP</a></li>
+            </ul>
+        </div>
+
+        <a class="navbar-brand" href="{{route('home')}}">@lang('properties.home')</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
             <span class="navbar-toggler-icon"></span>
         </button>

@@ -1,146 +1,83 @@
 <section class="py-5 bg-light">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold">Paketi za oglašavanje nekretnina</h2>
-            <p class="text-muted">
-                Izaberi paket koji odgovara tvojim potrebama – bez skrivenih troškova.
-            </p>
+            <h2 class="fw-bold">{{ __('properties.advertising_packages') }}</h2>
+            <p class="text-muted">{{ __('properties.choose_package') }}</p>
         </div>
 
         <div class="row g-4 justify-content-center">
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm text-center">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title fw-bold">Starter</h5>
-                        <p class="text-muted small">
-                            Idealno za privatna lica i povremeno oglašavanje.
-                        </p>
-                        <div class="my-4">
-                            <span class="display-5 fw-bold">€10</span>
-                            <span class="text-muted">/mesečno</span>
-                        </div>
-                        <ul class="list-unstyled text-start mb-4">
-                            <li class="mb-2">✅ Do 3 aktivna oglasa</li>
-                            <li class="mb-2">✅ Osnovna vidljivost</li>
-                            <li class="mb-2">✅ Važenje oglasa 30 dana</li>
-                            <li class="mb-2">✅ Email podrška</li>
-                        </ul>
-                        @php
-                            $prices=
-                            [
-                                "Starter"=>"price_1Si2iTDee8lfP295kYvKLkVm",
-                                "Company"=>"price_1Si2ipDee8lfP2950WUJFuvG" ,
-                                "Enterprise"=>"price_1Si2j0Dee8lfP295xE24zHlr"
-                            ]
-                        @endphp
-                        @if(auth()->user() && auth()->user()->subscribedToPrice($prices["Starter"]))
-                            <div class="mt-auto p-3 text-center fw-bold rounded"
-                                 style="background:#e9f7ef; color:#1e7e34;">
-                                Kupili ste ovaj paket!
-                            </div>
-                        @elseif(auth()->user() && !auth()->user()->subscribedToPrice($prices["Starter"])
-                                   && auth()->user()->subscribed('default'))
-                            <a href="#"
-                               class="btn btn-secondary mt-auto wait-subscription-btn"
-                               data-ends-at="{{ auth()->user()->subscription('default')->ends_at }}">
-                                Izaberi paket
-                            </a>
-                        @else
-                            <a href="{{ route('checkout','Starter') }}" class="btn btn-primary mt-auto">
-                                Izaberi paket
-                            </a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 shadow border-primary text-center">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title fw-bold">Company</h5>
-                        <p class="text-muted small">
-                            Najbolji izbor za agencije i aktivne prodavce.
-                        </p>
-                        <div class="my-4">
-                            <span class="display-5 fw-bold">€25</span>
-                            <span class="text-muted">/mesečno</span>
-                        </div>
-                        <ul class="list-unstyled text-start mb-4">
-                            <li class="mb-2">✅ Do 20 aktivnih oglasa</li>
-                            <li class="mb-2">✅ Istaknuti oglasi u pretrazi</li>
-                            <li class="mb-2">✅ Statistika pregleda</li>
-                            <li class="mb-2">✅ Prioritetna podrška</li>
-                        </ul>
-                        @if(auth()->user() && auth()->user()->subscribedToPrice($prices["Company"]))
-                            <div class="mt-auto p-3 text-center fw-bold rounded"
-                                 style="background:#e9f7ef; color:#1e7e34;">
-                                Kupili ste ovaj paket!
-                            </div>
-                        @elseif(auth()->user() && !auth()->user()->subscribedToPrice($prices["Company"])
-                                   && auth()->user()->subscribed('default'))
-                            <a href="#"
-                               class="btn btn-secondary mt-auto wait-subscription-btn"
-                               data-ends-at="{{ auth()->user()->subscription('default')->ends_at }}">
-                                Izaberi paket
-                            </a>
-                        @else
-                            <a href="{{ route('checkout','Company') }}" class="btn btn-primary mt-auto">
-                                Izaberi paket
-                            </a>
-                        @endif
-                    </div>
-                </div>
-            </div>
+            @php
+                $prices = [
+                    "Starter" => "price_1Si2iTDee8lfP295kYvKLkVm",
+                    "Company" => "price_1Si2ipDee8lfP2950WUJFuvG",
+                    "Enterprise" => "price_1Si2j0Dee8lfP295xE24zHlr"
+                ];
+            @endphp
 
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm text-center">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title fw-bold">Enterprise</h5>
-                        <p class="text-muted small">
-                            Za velike agencije i profesionalne investitore.
-                        </p>
-                        <div class="my-4">
-                            <span class="display-5 fw-bold">€50</span>
-                            <span class="text-muted">/mesečno</span>
-                        </div>
-                        <ul class="list-unstyled text-start mb-4">
-                            <li class="mb-2">✅ Neograničen broj oglasa</li>
-                            <li class="mb-2">✅ Top pozicije na sajtu</li>
-                            <li class="mb-2">✅ Brendirani profil agencije</li>
-                            <li class="mb-2">✅ Telefonska i email podrška</li>
-                            <li class="mb-2" id="shouldWaitToFinishSubscription" style="display: none"></li>
-                        </ul>
-                        @if(auth()->user() && auth()->user()->subscribedToPrice($prices["Enterprise"]))
-                            <div class="mt-auto p-3 text-center fw-bold rounded"
-                                 style="background:#e9f7ef; color:#1e7e34;">
-                                Kupili ste ovaj paket!
+            @foreach(['Starter','Company','Enterprise'] as $plan)
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm text-center @if($plan=='Company') border-primary @endif">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">{{ __('properties.' . strtolower($plan)) }}</h5>
+                            <p class="text-muted small">{{ __('properties.' . strtolower($plan) . '_desc') }}</p>
+                            <div class="my-4">
+                                <span class="display-5 fw-bold">
+                                    @if($plan=='Starter') €10 @elseif($plan=='Company') €25 @else €50 @endif
+                                </span>
+                                <span class="text-muted">{{ __('properties.monthly') }}</span>
                             </div>
-                        @elseif(auth()->user() && !auth()->user()->subscribedToPrice($prices["Enterprise"])
-                                   && auth()->user()->subscribed('default'))
-                            <a href="#"
-                               class="btn btn-secondary mt-auto wait-subscription-btn"
-                               data-ends-at="{{ auth()->user()->subscription('default')->ends_at }}">
-                                Izaberi paket
-                            </a>
-                        @else
-                            <a href="{{ route('checkout','Enterprise') }}" class="btn btn-primary mt-auto">
-                                Izaberi paket
-                            </a>
-                        @endif
+                            <ul class="list-unstyled text-start mb-4">
+                                @if($plan=='Starter')
+                                    <li class="mb-2">✅ {{ __('properties.up_to_3_ads') }}</li>
+                                    <li class="mb-2">✅ {{ __('properties.basic_visibility') }}</li>
+                                    <li class="mb-2">✅ {{ __('properties.ad_valid_30_days') }}</li>
+                                    <li class="mb-2">✅ {{ __('properties.email_support') }}</li>
+                                @elseif($plan=='Company')
+                                    <li class="mb-2">✅ {{ __('properties.up_to_20_ads') }}</li>
+                                    <li class="mb-2">✅ {{ __('properties.featured_listings') }}</li>
+                                    <li class="mb-2">✅ {{ __('properties.view_stats') }}</li>
+                                    <li class="mb-2">✅ {{ __('properties.priority_support') }}</li>
+                                @else
+                                    <li class="mb-2">✅ {{ __('properties.unlimited_ads') }}</li>
+                                    <li class="mb-2">✅ {{ __('properties.top_positions') }}</li>
+                                    <li class="mb-2">✅ {{ __('properties.branded_profile') }}</li>
+                                    <li class="mb-2">✅ {{ __('properties.phone_email_support') }}</li>
+                                    <li class="mb-2" id="shouldWaitToFinishSubscription" style="display: none"></li>
+                                @endif
+                            </ul>
+
+                            @if(auth()->user() && auth()->user()->subscribedToPrice($prices[$plan]))
+                                <div class="mt-auto p-3 text-center fw-bold rounded"
+                                     style="background:#e9f7ef; color:#1e7e34;">
+                                    {{ __('properties.package_purchased') }}
+                                </div>
+                            @elseif(auth()->user() && !auth()->user()->subscribedToPrice($prices[$plan])
+                                       && auth()->user()->subscribed('default'))
+                                <a href="#"
+                                   class="btn btn-secondary mt-auto wait-subscription-btn"
+                                   data-ends-at="{{ auth()->user()->subscription('default')->ends_at }}">
+                                    {{ __('properties.choose_package_btn') }}
+                                </a>
+                            @else
+                                <a href="{{ route('checkout',$plan) }}" class="btn btn-primary mt-auto">
+                                    {{ __('properties.choose_package_btn') }}
+                                </a>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
+
 <script>
     document.querySelectorAll('.wait-subscription-btn').forEach(btn => {
         btn.addEventListener('click', function (e) {
             e.preventDefault();
-
             const originalText = this.innerText;
             const originalClasses = this.className;
             const endsAt = this.dataset.endsAt;
-
             if (!endsAt) return;
 
             this.classList.remove('btn-secondary');
@@ -149,7 +86,7 @@
             const diffMs = new Date(endsAt) - new Date();
             const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 
-            this.innerText = `Morate sačekati još ${diffDays} dana jer ste se pretplatili na drugi paket!`;
+            this.innerText = "{{ __('properties.wait_subscription_msg') }}".replace(':days', diffDays);
 
             setTimeout(() => {
                 this.innerText = originalText;
@@ -157,5 +94,4 @@
             }, 3000);
         });
     });
-
 </script>

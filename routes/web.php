@@ -66,4 +66,15 @@ Route::post('/profile/upload-photo', [UserController::class, 'uploadPhoto'])
 Route::get('/checkout/{name}',[CheckoutController::class, 'checkout'])
     ->name('checkout')->middleware('auth');
 
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'sr'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('lang');
+
+
+
+
+
 
